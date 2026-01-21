@@ -69,6 +69,22 @@ header p{
 }
 header a{ color: var(--navy); font-weight: 700; }
 
+.licenses{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fbfdff;
+  color: #374151;
+  text-align:left;
+  font-size: 13px;
+  line-height: 1.35;
+  max-width: 980px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.licenses strong{ color:#111827; }
+
 /* Section titles */
 h2{
   margin: 16px 0 10px;
@@ -111,7 +127,7 @@ textarea{ min-height: 92px; resize: vertical; }
   header img{ height:72px; max-width: 220px; }
 }
 
-/* Tables -> Mobile: cards */
+/* Tables -> Mobile: horizontal scroll */
 .table-wrap{
   width:100%;
   overflow-x:auto;
@@ -124,7 +140,7 @@ textarea{ min-height: 92px; resize: vertical; }
 table{
   width:100%;
   border-collapse: collapse;
-  min-width: 860px; /* allows horizontal scroll on small screens */
+  min-width: 860px;
 }
 th, td{
   border-bottom: 1px solid var(--border);
@@ -224,15 +240,18 @@ button.smallbtn{
 
       <h1>MMT Financial & Insurance</h1>
       <p><strong>Educate • Protect • Wealth</strong></p>
-      <p>
+
+      <!-- LICENSES (Added) -->
+      <div class="licenses">
+        <div><strong>Marc Merritt</strong> — NYS Life, Health, FIA Licensed since 2001, LA # 1010090</div>
+        <div><strong>Marylene Teopengco-Merritt</strong> — NYS Life &amp; FIA Licensed since 2017, LA # 1298496</div>
+      </div>
+
+      <p style="margin-top:10px;">
         📞 Marc Merritt, RVP: <strong>1-646-645-2453</strong><br>
         📞 Marylene Teopengco-Merritt, RVP: <strong>1-631-579-1904</strong>
       </p>
-      <p>
-        📅 <a href="https://calendly.com/retirement-discussion/one-on-one-meeting" target="_blank" rel="noreferrer">
-          Book a One-on-One Strategy Meeting
-        </a>
-      </p>
+
       <p class="hint">
         Tip: On mobile, the policy and retirement tables can be scrolled left/right.
       </p>
@@ -287,6 +306,7 @@ button.smallbtn{
       </div>
     </div>
 
+    <!-- ADDRESS -->
     <h2>Address</h2>
     <div class="grid cols2">
       <div style="grid-column:1/-1;">
@@ -452,8 +472,7 @@ button.smallbtn{
     </div>
 
     <div class="footer">
-      Please review my Attached Needs Analysis Form and I look forward to reviewing this with you or Marylene.<br>
-      Calendly: https://calendly.com/retirement-discussion/one-on-one-meeting
+      Please review my Attached Needs Analysis Form and I look forward to reviewing this with you or Marylene.
     </div>
 
   </div>
@@ -543,9 +562,8 @@ function emailForm(){
   const clientName=(document.getElementById("clientName").value||"").trim();
   const subject=encodeURIComponent("Completed MMT Needs Analysis Form - " + (clientName || "Client"));
   const body=encodeURIComponent(
-    "Client Name: " + (clientName || "__________________________") + "\n\n" +
-    "Please review my Attached Needs Analysis Form and I look forward to reviewing this with you or Marylene.\n\n" +
-    "Calendly link:\nhttps://calendly.com/retirement-discussion/one-on-one-meeting\n\n" +
+    "Client Name: " + (clientName || "__________________________") + "\\n\\n" +
+    "Please review my Attached Needs Analysis Form and I look forward to reviewing this with you or Marylene.\\n\\n" +
     "IMPORTANT: Please attach the downloaded/printed PDF of this form to this email before sending."
   );
 
@@ -585,6 +603,3 @@ addRetRow();
 
 </body>
 </html>
-
-
-
