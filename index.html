@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Insurance Needs Analysis - Generic Form</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+        
+        // Icon components
+        const ChevronDown = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        );
+        
+        const ChevronUp = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        );
+        
+        const Share2 = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+        );
+        
+        const Download = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+        );
+        
+        const Save = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+        );
+
+        const UserPlus = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+        );
+
+        function NeedsAnalysisForm() {
+            const [isInitialized, setIsInitialized] = useState(false);
+            const [clientInfo, setClientInfo] = useState({
+                client1Name: '',
+                client1Age: '',
+                client2Name: '',
+                client2Age: '',
+                lastName: '',
+                location: '',
+                children: []
+            });
+            
+            const [expandedSections, setExpandedSections] = useState({});
+            const [formData, setFormData] = useState({});
+
+            const handleClientInfoChange = (field, value) => {
+                setClientInfo(prev => ({ ...prev, [field]: value }));
+            };
+
+            const handleChildChange = (index, field, value) => {
+                const newChildren = [...clientInfo.children];
+                newChildren[index] = { ...newChildren[index], [field]: value };
+                setClientInfo(prev => ({ ...prev, children: newChildren }));
+            };
+
+            const addChild = () => {
+                setClientInfo(prev => ({
+                    ...prev,
+                    children: [...prev.children, { name: '', age: '' }]
+                }));
+            };
+
+            const removeChild = (index) => {
+                setClientInfo(prev => ({
+                    ...prev,
+                    children: prev.children.filter((_, i) => i !== index)
+                }));
+            };
+
+            const startForm = () => {
+                if (!clientInfo.client1Name || !clientInfo.lastName) {
+                    alert('Please enter at least Client 1 name and last name to continue.');
+                    return;
+                }
+                setIsInitialized(true);
+            };
+
+            const toggleSection = (section) => {
+                setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
+            };
+
+            const handleInputChange = (field, value) => {
+                setFormData(prev => ({ ...prev, [field]: value }));
+            };
+
+            const calculateTotals = () => {
+                const monthlyExpenses = parseFloat(formData.mortgage || 0) + parseFloat(formData.propertyTax || 0) + 
+                    parseFloat(formData.utilities || 0) + parseFloat(formData.food || 0) + parseFloat(formData.carPayment || 0) +
+                    parseFloat(formData.gas || 0) + parseFloat(formData.autoInsurance || 0) + parseFloat(formData.healthInsurance || 0) +
+                    parseFloat(formData.medical || 0) + parseFloat(formData.currentLifePremiums || 0) + parseFloat(formData.education || 0) +
+                    parseFloat(formData.debtPayments || 0) + parseFloat(formData.entertainment || 0) + parseFloat(formData.savings || 0) +
+                    parseFloat(formData.other || 0);
+
+                const totalAssets = parseFloat(formData.homeValue || 0) + parseFloat(formData.client1_401k || 0) +
+                    parseFloat(formData.client1IRA || 0) + parseFloat(formData.client2_401k || 0) + parseFloat(formData.client2IRA || 0) +
+                    parseFloat(formData.emergencyFund || 0) + parseFloat(formData.savingsAccounts || 0) +
+                    parseFloat(formData.brokerageAccounts || 0) + parseFloat(formData.vehicleValue || 0);
+
+                const totalLiabilities = parseFloat(formData.mortgageBalanceDebt || 0) + parseFloat(formData.autoLoan1 || 0) +
+                    parseFloat(formData.autoLoan2 || 0) + parseFloat(formData.creditCardDebt || 0) +
+                    parseFloat(formData.studentLoans || 0) + parseFloat(formData.otherDebts || 0);
+
+                const client1Need = parseFloat(formData.finalExpenses || 0) + totalLiabilities +
+                    (parseFloat(formData.client1IncomeReplace || 0) * parseFloat(formData.client1YearsReplace || 0)) +
+                    parseFloat(formData.collegeGap || 0);
+
+                const client2Need = parseFloat(formData.finalExpenses || 0) + totalLiabilities +
+                    (parseFloat(formData.client2IncomeReplace || 0) * parseFloat(formData.client2YearsReplace || 0)) +
+                    parseFloat(formData.collegeGap || 0);
+
+                const client1Gap = client1Need - parseFloat(formData.client1Policy1Benefit || 0) - parseFloat(formData.client1GroupLife || 0);
+                const client2Gap = client2Need - parseFloat(formData.client2Policy1Benefit || 0) - parseFloat(formData.client2GroupLife || 0);
+
+                return {
+                    monthlyExpenses: monthlyExpenses.toFixed(2),
+                    totalAssets: totalAssets.toFixed(2),
+                    totalLiabilities: totalLiabilities.toFixed(2),
+                    netWorth: (totalAssets - totalLiabilities).toFixed(2),
+                    client1Need: client1Need.toFixed(2),
+                    client1Gap: client1Gap.toFixed(2),
+                    client2Need: client2Need.toFixed(2),
+                    client2Gap: client2Gap.toFixed(2)
+                };
+            };
+
+            const exportAsText = () => {
+                const totals = calculateTotals();
+                const today = new Date().toLocaleDateString();
+                const totalIncome = parseFloat(formData.client1Income || 0) + parseFloat(formData.client2Income || 0) + 
+                    parseFloat(formData.rentalIncome || 0) + parseFloat(formData.investmentIncome || 0) + parseFloat(formData.otherIncome || 0);
+                const client1Coverage = parseFloat(formData.client1Policy1Benefit || 0) + parseFloat(formData.client1GroupLife || 0);
+                const client2Coverage = parseFloat(formData.client2Policy1Benefit || 0) + parseFloat(formData.client2GroupLife || 0);
+                
+                let text = `FAMILY LIFE INSURANCE NEEDS ANALYSIS
+${clientInfo.lastName} Family - ${clientInfo.location} - ${today}
+
+SECTION 1: PERSONAL INFORMATION
+${clientInfo.client1Name} ${clientInfo.lastName} (Age ${clientInfo.client1Age}) - DOB: ${formData.client1DOB}, Tobacco: ${formData.client1Tobacco}, Health: ${formData.client1Health}, Occupation: ${formData.client1Occupation}`;
+
+                if (clientInfo.client2Name) {
+                    text += `\n${clientInfo.client2Name} ${clientInfo.lastName} (Age ${clientInfo.client2Age}) - DOB: ${formData.client2DOB}, Tobacco: ${formData.client2Tobacco}, Health: ${formData.client2Health}, Occupation: ${formData.client2Occupation}`;
+                }
+
+                text += `\nYears Married: ${formData.yearsMarried}`;
+
+                clientInfo.children.forEach((child, i) => {
+                    text += `\nChild ${i + 1} (Age ${child.age}): ${child.name} - ${formData[`child${i}Status`] || ''}`;
+                });
+
+                text += `
+
+SECTION 2: INCOME & EMPLOYMENT
+${clientInfo.client1Name}: ${formData.client1Employer}, Income: $${formData.client1Income}, Group Life: $${formData.client1GroupLife}`;
+
+                if (clientInfo.client2Name) {
+                    text += `\n${clientInfo.client2Name}: ${formData.client2Employer}, Income: $${formData.client2Income}, Group Life: $${formData.client2GroupLife}`;
+                }
+
+                text += `\nTotal Household Income: $${totalIncome.toLocaleString()}
+
+SECTION 3: MONTHLY EXPENSES
+Total: $${totals.monthlyExpenses} (Annual: $${(parseFloat(totals.monthlyExpenses) * 12).toLocaleString()})
+
+SECTION 4: ASSETS - Total: $${totals.totalAssets}
+SECTION 5: LIABILITIES - Total: $${totals.totalLiabilities}
+NET WORTH: $${totals.netWorth}
+
+SECTION 6: EXISTING INSURANCE
+${clientInfo.client1Name}: ${formData.client1Policy1Type}, Benefit: $${formData.client1Policy1Benefit}, Total: $${client1Coverage.toLocaleString()}`;
+
+                if (clientInfo.client2Name) {
+                    text += `\n${clientInfo.client2Name}: ${formData.client2Policy1Type}, Benefit: $${formData.client2Policy1Benefit}, Total: $${client2Coverage.toLocaleString()}`;
+                }
+
+                text += `
+
+INSURANCE NEEDS ANALYSIS
+IF ${clientInfo.client1Name.toUpperCase()} PASSES: Need: $${totals.client1Need}, Coverage: $${client1Coverage.toLocaleString()}, GAP: $${totals.client1Gap}`;
+
+                if (clientInfo.client2Name) {
+                    text += `\nIF ${clientInfo.client2Name.toUpperCase()} PASSES: Need: $${totals.client2Need}, Coverage: $${client2Coverage.toLocaleString()}, GAP: $${totals.client2Gap}`;
+                }
+
+                text += `
+
+PREFERENCES
+Max Premium ${clientInfo.client1Name}: $${formData.maxPremiumClient1}`;
+                
+                if (clientInfo.client2Name) {
+                    text += `, Max Premium ${clientInfo.client2Name}: $${formData.maxPremiumClient2}`;
+                }
+
+                text += `\nPrimary Goal: ${formData.primaryGoal}
+
+Main Concern: ${formData.mainConcern}
+Success Outcome: ${formData.successOutcome}`;
+
+                return text;
+            };
+
+            const handleExport = () => {
+                const text = exportAsText();
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${clientInfo.lastName}_Needs_Analysis_${new Date().toISOString().split('T')[0]}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            const handleShare = async () => {
+                const text = exportAsText();
+                if (navigator.share) {
+                    try {
+                        await navigator.share({ title: `${clientInfo.lastName} Family Needs Analysis`, text: text });
+                    } catch (err) {
+                        console.log('Share cancelled');
+                    }
+                } else {
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('Copied to clipboard! Paste into email or message.');
+                    });
+                }
+            };
+
+            const Section = ({ title, number, children }) => {
+                const isExpanded = expandedSections[number];
+                return (
+                    <div className="mb-3 bg-white rounded-lg shadow">
+                        <button onClick={() => toggleSection(number)} className="w-full px-4 py-3 flex items-center justify-between bg-blue-50 rounded-t-lg">
+                            <span className="font-semibold text-sm text-blue-900">{number}. {title}</span>
+                            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                        </button>
+                        {isExpanded && <div className="p-4 space-y-3">{children}</div>}
+                    </div>
+                );
+            };
+
+            const Input = ({ label, field, type = "text", placeholder = "" }) => (
+                <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
+                    <input type={type} value={formData[field] || ''} onChange={(e) => handleInputChange(field, e.target.value)}
+                        placeholder={placeholder} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" />
+                </div>
+            );
+
+            const Select = ({ label, field, options }) => (
+                <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
+                    <select value={formData[field] || ''} onChange={(e) => handleInputChange(field, e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm">
+                        <option value="">Select...</option>
+                        {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    </select>
+                </div>
+            );
+
+            const TextArea = ({ label, field, rows = 3 }) => (
+                <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
+                    <textarea value={formData[field] || ''} onChange={(e) => handleInputChange(field, e.target.value)} rows={rows}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" />
+                </div>
+            );
+
+            if (!isInitialized) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+                        <div className="bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full">
+                            <div className="text-center mb-8">
+                                <div className="inline-block p-4 bg-blue-100 rounded-full mb-4">
+                                    <UserPlus size={48} className="text-blue-600" />
+                                </div>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-2">Life Insurance Needs Analysis</h1>
+                                <p className="text-gray-600">Let's start by gathering your basic information</p>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div className="bg-blue-50 p-6 rounded-lg space-y-4">
+                                    <h2 className="font-semibold text-lg text-blue-900 mb-3">Primary Client</h2>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                            <input type="text" value={clientInfo.client1Name} 
+                                                onChange={(e) => handleClientInfoChange('client1Name', e.target.value)}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                                placeholder="John" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                                            <input type="number" value={clientInfo.client1Age} 
+                                                onChange={(e) => handleClientInfoChange('client1Age', e.target.value)}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                                placeholder="45" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-green-50 p-6 rounded-lg space-y-4">
+                                    <h2 className="font-semibold text-lg text-green-900 mb-3">Secondary Client (Optional)</h2>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                            <input type="text" value={clientInfo.client2Name} 
+                                                onChange={(e) => handleClientInfoChange('client2Name', e.target.value)}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                                placeholder="Jane" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                                            <input type="number" value={clientInfo.client2Age} 
+                                                onChange={(e) => handleClientInfoChange('client2Age', e.target.value)}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                                placeholder="43" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                        <input type="text" value={clientInfo.lastName} 
+                                            onChange={(e) => handleClientInfoChange('lastName', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                            placeholder="Smith" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Location (City, State)</label>
+                                        <input type="text" value={clientInfo.location} 
+                                            onChange={(e) => handleClientInfoChange('location', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                            placeholder="New York, NY" />
+                                    </div>
+                                </div>
+
+                                <div className="bg-purple-50 p-6 rounded-lg space-y-4">
+                                    <h2 className="font-semibold text-lg text-purple-900 mb-3">Children</h2>
+                                    {clientInfo.children.map((child, index) => (
+                                        <div key={index} className="flex gap-2 items-end">
+                                            <div className="flex-1">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                                <input type="text" value={child.name} 
+                                                    onChange={(e) => handleChildChange(index, 'name', e.target.value)}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                                    placeholder="Child name" />
+                                            </div>
+                                            <div className="w-24">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                                                <input type="number" value={child.age} 
+                                                    onChange={(e) => handleChildChange(index, 'age', e.target.value)}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                                                    placeholder="10" />
+                                            </div>
+                                            <button onClick={() => removeChild(index)} 
+                                                className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button onClick={addChild} 
+                                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 font-medium">
+                                        + Add Child
+                                    </button>
+                                </div>
+
+                                <button onClick={startForm} 
+                                    className="w-full px-6 py-4 bg-blue-600 text-white rounded-lg font-bold text-lg hover:bg-blue-700 shadow-lg">
+                                    Start Needs Analysis →
+                                </button>
+                                
+                                <p className="text-xs text-center text-gray-500">* Required fields</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const totals = calculateTotals();
+
+            return (
+                <div className="min-h-screen bg-gray-50 pb-24">
+                    <div className="bg-blue-600 text-white p-4 sticky top-0 z-10 shadow-md">
+                        <h1 className="text-lg font-bold">Life Insurance Needs Analysis</h1>
+                        <p className="text-xs mt-1">{clientInfo.lastName} Family - {clientInfo.location}</p>
+                    </div>
+
+                    <div className="sticky top-14 z-10 bg-white shadow-sm p-2 flex gap-2">
+                        <button onClick={() => setIsInitialized(false)} className="px-3 py-2 bg-gray-500 text-white rounded-md text-sm font-medium">
+                            ← Back
+                        </button>
+                    </div>
+
+                    <div className="p-4">
+                        <Section title="Personal Information" number="1">
+                            <div className="bg-blue-50 p-3 rounded-md mb-3">
+                                <h3 className="font-semibold text-sm mb-2">{clientInfo.client1Name} (Age {clientInfo.client1Age})</h3>
+                                <Input label="Date of Birth" field="client1DOB" type="date" />
+                                <Select label="Tobacco" field="client1Tobacco" options={['Yes', 'No']} />
+                                <Select label="Health" field="client1Health" options={['Excellent', 'Good', 'Fair', 'Poor']} />
+                                <Input label="Occupation" field="client1Occupation" />
+                            </div>
+                            
+                            {clientInfo.client2Name && (
+                                <div className="bg-green-50 p-3 rounded-md mb-3">
+                                    <h3 className="font-semibold text-sm mb-2">{clientInfo.client2Name} (Age {clientInfo.client2Age})</h3>
+                                    <Input label="Date of Birth" field="client2DOB" type="date" />
+                                    <Select label="Tobacco" field="client2Tobacco" options={['Yes', 'No']} />
+                                    <Select label="Health" field="client2Health" options={['Excellent', 'Good', 'Fair', 'Poor']} />
+                                    <Input label="Occupation" field="client2Occupation" />
+                                </div>
+                            )}
+                            
+                            {clientInfo.client2Name && <Input label="Years Married" field="yearsMarried" type="number" />}
+                            
+                            {clientInfo.children.map((child, i) => (
+                                <div key={i} className="border-t pt-3 mt-3">
+                                    <h3 className="font-semibold text-sm mb-2">{child.name} (Age {child.age})</h3>
+                                    <Input label="Status" field={`child${i}Status`} placeholder="High School/College/Working" />
+                                </div>
+                            ))}
+                        </Section>
+
+                        <Section title="Income & Employment" number="2">
+                            <div className="bg-blue-50 p-3 rounded-md mb-3">
+                                <h3 className="font-semibold text-sm mb-2">{clientInfo.client1Name}</h3>
+                                <Input label="Employer" field="client1Employer" />
+                                <Input label="Annual Income" field="client1Income" type="number" />
+                                <Input label="Years Employed" field="client1YearsEmployed" type="number" />
+                                <Input label="Retirement Age" field="client1RetirementAge" type="number" />
+                                <Input label="Group Life Insurance" field="client1GroupLife" type="number" />
+                            </div>
+                            
+                            {clientInfo.client2Name && (
+                                <div className="bg-green-50 p-3 rounded-md mb-3">
+                                    <h3 className="font-semibold text-sm mb-2">{clientInfo.client2Name}</h3>
+                                    <Input label="Employer" field="client2Employer" />
+                                    <Input label="Annual Income" field="client2Income" type="number" />
+                                    <Input label="Years Employed" field="client2YearsEmployed" type="number" />
+                                    <Input label="Retirement Age" field="client2RetirementAge" type="number" />
+                                    <Input label="Group Life Insurance" field="client2GroupLife" type="number" />
+                                </div>
+                            )}
+                            
+                            <div className="border-t pt-3 mt-3">
+                                <Input label="Rental Income (annual)" field="rentalIncome" type="number" />
+                                <Input label="Investment Income (annual)" field="investmentIncome" type="number" />
+                                <Input label="Other Income (annual)" field="otherIncome" type="number" />
+                            </div>
+                            <div className="bg-yellow-50 p-3 rounded-md mt-3">
+                                <p className="text-sm font-semibold">Total Income</p>
+                                <p className="text-2xl font-bold text-green-700">
+                                    ${(parseFloat(formData.client1Income || 0) + parseFloat(formData.client2Income || 0) + parseFloat(formData.rentalIncome || 0) + parseFloat(formData.investmentIncome || 0) + parseFloat(formData.otherIncome || 0)).toLocaleString()}
+                                </p>
+                            </div>
+                        </Section>
+
+                        <Section title="Monthly Expenses" number="3">
+                            <Input label="Mortgage/Rent" field="mortgage" type="number" />
+                            <Input label="Property Tax" field="propertyTax" type="number" />
+                            <Input label="Utilities" field="utilities" type="number" />
+                            <Input label="Food" field="food" type="number" />
+                            <Input label="Car Payment" field="carPayment" type="number" />
+                            <Input label="Gas" field="gas" type="number" />
+                            <Input label="Auto Insurance" field="autoInsurance" type="number" />
+                            <Input label="Health Insurance" field="healthInsurance" type="number" />
+                            <Input label="Medical" field="medical" type="number" />
+                            <Input label="Life Insurance" field="currentLifePremiums" type="number" />
+                            <Input label="Education" field="education" type="number" />
+                            <Input label="Debt Payments" field="debtPayments" type="number" />
+                            <Input label="Entertainment" field="entertainment" type="number" />
+                            <Input label="Savings" field="savings" type="number" />
+                            <Input label="Other" field="other" type="number" />
+                            <div className="bg-yellow-50 p-3 rounded-md mt-3">
+                                <p className="text-sm font-semibold">Total Monthly</p>
+                                <p className="text-2xl font-bold text-red-700">${totals.monthlyExpenses}</p>
+                            </div>
+                        </Section>
+
+                        <Section title="Assets" number="4">
+                            <Input label="Home Value" field="homeValue" type="number" />
+                            <Input label="Mortgage Balance" field="mortgageBalance" type="number" />
+                            <Input label={`${clientInfo.client1Name} 401k`} field="client1_401k" type="number" />
+                            <Input label={`${clientInfo.client1Name} IRA`} field="client1IRA" type="number" />
+                            {clientInfo.client2Name && (
+                                <>
+                                    <Input label={`${clientInfo.client2Name} 401k`} field="client2_401k" type="number" />
+                                    <Input label={`${clientInfo.client2Name} IRA`} field="client2IRA" type="number" />
+                                </>
+                            )}
+                            <Input label="Emergency Fund" field="emergencyFund" type="number" />
+                            <Input label="Savings" field="savingsAccounts" type="number" />
+                            <Input label="Brokerage" field="brokerageAccounts" type="number" />
+                            <Input label="Vehicles" field="vehicleValue" type="number" />
+                            <div className="bg-green-50 p-3 rounded-md mt-3">
+                                <p className="text-sm font-semibold">Total Assets</p>
+                                <p className="text-2xl font-bold text-green-700">${totals.totalAssets}</p>
+                            </div>
+                        </Section>
+
+                        <Section title="Liabilities" number="5">
+                            <Input label="Mortgage" field="mortgageBalanceDebt" type="number" />
+                            <Input label="Mortgage Payment" field="mortgagePayment" type="number" />
+                            <Input label="Auto Loan 1" field="autoLoan1" type="number" />
+                            <Input label="Auto 1 Payment" field="autoLoan1Payment" type="number" />
+                            <Input label="Auto Loan 2" field="autoLoan2" type="number" />
+                            <Input label="Auto 2 Payment" field="autoLoan2Payment" type="number" />
+                            <Input label="Credit Cards" field="creditCardDebt" type="number" />
+                            <Input label="CC Payment" field="creditCardPayment" type="number" />
+                            <Input label="Student Loans" field="studentLoans" type="number" />
+                            <Input label="Other Debts" field="otherDebts" type="number" />
+                            <div className="bg-red-50 p-3 rounded-md mt-3">
+                                <p className="text-sm font-semibold">Total Liabilities</p>
+                                <p className="text-2xl font-bold text-red-700">${totals.totalLiabilities}</p>
+                            </div>
+                            <div className="bg-blue-50 p-3 rounded-md mt-3">
+                                <p className="text-sm font-semibold">Net Worth</p>
+                                <p className="text-2xl font-bold text-blue-700">${totals.netWorth}</p>
+                            </div>
+                        </Section>
+
+                        <Section title="Existing Insurance" number="6">
+                            <div className="bg-blue-50 p-3 rounded-md mb-3">
+                                <h3 className="font-semibold text-sm mb-2">{clientInfo.client1Name}</h3>
+                                <Select label="Type" field="client1Policy1Type" options={['Term', 'Whole Life', 'IUL', 'VUL']} />
+                                <Input label="Death Benefit" field="client1Policy1Benefit" type="number" />
+                                <Input label="Premium" field="client1Policy1Premium" type="number" />
+                                <Input label="Cash Value" field="client1Policy1Cash" type="number" />
+                            </div>
+                            {clientInfo.client2Name && (
+                                <div className="bg-green-50 p-3 rounded-md">
+                                    <h3 className="font-semibold text-sm mb-2">{clientInfo.client2Name}</h3>
+                                    <Select label="Type" field="client2Policy1Type" options={['Term', 'Whole Life', 'IUL', 'VUL']} />
+                                    <Input label="Death Benefit" field="client2Policy1Benefit" type="number" />
+                                    <Input label="Premium" field="client2Policy1Premium" type="number" />
+                                    <Input label="Cash Value" field="client2Policy1Cash" type="number" />
+                                </div>
+                            )}
+                        </Section>
+
+                        {clientInfo.children.length > 0 && (
+                            <Section title="College Funding" number="7">
+                                {clientInfo.children.map((child, i) => (
+                                    <div key={i} className="bg-purple-50 p-3 rounded-md mb-3">
+                                        <h3 className="font-semibold text-sm mb-2">{child.name} (Age {child.age})</h3>
+                                        <Select label="In/Planning College?" field={`child${i}College`} options={['Yes', 'No', 'Undecided']} />
+                                        <Input label="School" field={`child${i}School`} />
+                                        <Input label="Annual Cost" field={`child${i}Cost`} type="number" />
+                                        <Input label="Years" field={`child${i}Years`} type="number" />
+                                        <Input label="Current Funding" field={`child${i}Funding`} type="number" />
+                                    </div>
+                                ))}
+                                <Input label="Total College Gap" field="collegeGap" type="number" />
+                            </Section>
+                        )}
+
+                        <Section title="Retirement" number="8">
+                            <div className="bg-blue-50 p-3 rounded-md mb-3">
+                                <h3 className="font-semibold text-sm mb-2">{clientInfo.client1Name}</h3>
+                                <Input label="Desired Retirement Age" field="client1DesiredRetirement" type="number" />
+                                <Input label="Expected Social Security" field="client1SSI" type="number" />
+                            </div>
+                            {clientInfo.client2Name && (
+                                <div className="bg-green-50 p-3 rounded-md mb-3">
+                                    <h3 className="font-semibold text-sm mb-2">{clientInfo.client2Name}</h3>
+                                    <Input label="Desired Retirement Age" field="client2DesiredRetirement" type="number" />
+                                    <Input label="Expected Social Security" field="client2SSI" type="number" />
+                                </div>
+                            )}
+                            <Input label="Annual Retirement Need" field="retirementNeed" type="number" />
+                        </Section>
+
+                        <Section title="Insurance Needs" number="9">
+                            <div className="bg-red-50 p-3 rounded-md mb-4">
+                                <h3 className="font-bold text-sm mb-3">If {clientInfo.client1Name.toUpperCase()} Passes</h3>
+                                <Input label="Final Expenses" field="finalExpenses" type="number" />
+                                <Input label="Income to Replace (annual)" field="client1IncomeReplace" type="number" />
+                                <Input label="Years to Replace" field="client1YearsReplace" type="number" />
+                                <div className="bg-white p-3 rounded-md mt-3 space-y-2">
+                                    <div className="border-t pt-2 flex justify-between font-bold text-lg">
+                                        <span>INSURANCE GAP:</span>
+                                        <span className="text-red-700">${totals.client1Gap}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {clientInfo.client2Name && (
+                                <div className="bg-orange-50 p-3 rounded-md">
+                                    <h3 className="font-bold text-sm mb-3">If {clientInfo.client2Name.toUpperCase()} Passes</h3>
+                                    <Input label="Income to Replace (annual)" field="client2IncomeReplace" type="number" />
+                                    <Input label="Years to Replace" field="client2YearsReplace" type="number" />
+                                    <div className="bg-white p-3 rounded-md mt-3 space-y-2">
+                                        <div className="border-t pt-2 flex justify-between font-bold text-lg">
+                                            <span>INSURANCE GAP:</span>
+                                            <span className="text-red-700">${totals.client2Gap}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </Section>
+
+                        <Section title="Preferences" number="10">
+                            <TextArea label="Primary Goal" field="primaryGoal" />
+                            <Input label={`Max Premium (${clientInfo.client1Name})`} field="maxPremiumClient1" type="number" />
+                            {clientInfo.client2Name && (
+                                <Input label={`Max Premium (${clientInfo.client2Name})`} field="maxPremiumClient2" type="number" />
+                            )}
+                        </Section>
+
+                        <Section title="Estate Planning" number="11">
+                            <Select label="Have Will?" field="hasWill" options={['Yes', 'No']} />
+                            <Select label="Have Trust?" field="hasTrust" options={['Yes', 'No']} />
+                            <Select label="Have POA?" field="hasPOA" options={['Yes', 'No']} />
+                            {clientInfo.children.length > 0 && (
+                                <Select label="Guardian Designated?" field="hasGuardian" options={['Yes', 'No']} />
+                            )}
+                        </Section>
+
+                        <Section title="Health Details" number="12">
+                            <div className="bg-blue-50 p-3 rounded-md mb-3">
+                                <h3 className="font-semibold text-sm mb-2">{clientInfo.client1Name}</h3>
+                                <Input label="Height" field="client1Height" />
+                                <Input label="Weight" field="client1Weight" />
+                                <TextArea label="Conditions" field="client1Conditions" rows={2} />
+                            </div>
+                            {clientInfo.client2Name && (
+                                <div className="bg-green-50 p-3 rounded-md">
+                                    <h3 className="font-semibold text-sm mb-2">{clientInfo.client2Name}</h3>
+                                    <Input label="Height" field="client2Height" />
+                                    <Input label="Weight" field="client2Weight" />
+                                    <TextArea label="Conditions" field="client2Conditions" rows={2} />
+                                </div>
+                            )}
+                        </Section>
+
+                        <Section title="Key Concerns" number="13">
+                            <TextArea label="Main Financial Concern" field="mainConcern" rows={3} />
+                            <Input label={`Confidence if ${clientInfo.client1Name} passes (1-10)`} field="confidenceClient1" type="number" />
+                            {clientInfo.client2Name && (
+                                <Input label={`Confidence if ${clientInfo.client2Name} passes (1-10)`} field="confidenceClient2" type="number" />
+                            )}
+                            <TextArea label="What makes this successful?" field="successOutcome" rows={3} />
+                        </Section>
+                    </div>
+
+                    <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-3 space-y-2">
+                        <div className="flex gap-2">
+                            <button onClick={handleShare} className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold">
+                                <Share2 size={20} /> Share
+                            </button>
+                            <button onClick={handleExport} className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold">
+                                <Download size={20} /> Export
+                            </button>
+                        </div>
+                        <p className="text-xs text-center text-gray-500">Complete sections, then Share or Export</p>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<NeedsAnalysisForm />);
+    </script>
+</body>
+</html>
