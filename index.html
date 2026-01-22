@@ -25,62 +25,36 @@ body{
   color:#111827;
 }
 
-/* Mobile-first container */
-.container{
-  max-width:1100px;
-  margin: 0 auto;
-  padding: 16px;
-}
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-}
+.container{ max-width:1100px; margin:0 auto; padding:16px; }
+.card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
 
-/* Header */
 header{
   text-align:center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 14px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:14px;
 }
 .brand-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap: 10px;
-  flex-wrap:wrap;
+  display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
 }
 header img{
-  height:56px;
-  width:auto;
-  max-width: 46vw;
-  object-fit: contain;
-  border-radius: 10px;
+  height:56px; width:auto; max-width:46vw; object-fit:contain; border-radius:10px;
 }
-h1{
-  font-size: 20px;
-  margin: 10px 0 6px;
-}
-header p{
-  margin: 6px 0;
-  color: var(--muted);
-  line-height: 1.35;
-}
-header a{ color: var(--navy); font-weight: 700; }
+h1{ font-size:20px; margin:10px 0 6px; }
+header p{ margin:6px 0; color:var(--muted); line-height:1.35; }
+header a{ color:var(--navy); font-weight:700; }
 
 .licenses{
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: #fbfdff;
-  color: #374151;
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#fbfdff;
+  color:#374151;
   text-align:left;
-  font-size: 13px;
-  line-height: 1.35;
-  max-width: 980px;
+  font-size:13px;
+  line-height:1.35;
+  max-width:980px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -88,166 +62,106 @@ header a{ color: var(--navy); font-weight: 700; }
 
 .logo-warning{
   display:none;
-  margin: 10px auto 0;
-  max-width: 980px;
+  margin:10px auto 0;
+  max-width:980px;
   background:#fff3cd;
   border:1px solid #ffeeba;
   color:#856404;
   padding:10px 12px;
-  border-radius: 12px;
+  border-radius:12px;
   text-align:left;
-  font-size: 13px;
+  font-size:13px;
 }
-.logo-warning code{ font-weight: 700; }
+.logo-warning code{ font-weight:700; }
 
-/* Section titles */
 h2{
-  margin: 16px 0 10px;
-  font-size: 16px;
+  margin:16px 0 10px;
+  font-size:16px;
   background:var(--navy);
   color:#fff;
-  padding: 10px 12px;
-  border-radius: 12px;
+  padding:10px 12px;
+  border-radius:12px;
 }
 
-/* Inputs */
-label{
-  display:block;
-  margin-top: 10px;
-  font-weight: 700;
-}
+label{ display:block; margin-top:10px; font-weight:700; }
 input, textarea, select{
   width:100%;
-  padding: 12px;
-  margin-top: 6px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 16px; /* prevents iOS zoom */
+  padding:12px;
+  margin-top:6px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  font-size:16px;
   background:#fff;
 }
-textarea{ min-height: 92px; resize: vertical; }
-.hint{ font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+textarea{ min-height:92px; resize:vertical; }
+.hint{ font-size:13px; color:var(--muted); margin:6px 0 0; }
 
-/* Responsive grid */
-.grid{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-@media (min-width: 900px){
-  .container{ padding: 22px; }
-  .card{ padding: 22px; }
-  h1{ font-size: 26px; }
-  .grid.cols2{ grid-template-columns: 1fr 1fr; gap: 12px 16px; }
-  header img{ height:72px; max-width: 220px; }
+.grid{ display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:900px){
+  .container{ padding:22px; }
+  .card{ padding:22px; }
+  h1{ font-size:26px; }
+  .grid.cols2{ grid-template-columns:1fr 1fr; gap:12px 16px; }
+  header img{ height:72px; max-width:220px; }
 }
 
-/* Tables -> Mobile: horizontal scroll */
 .table-wrap{
   width:100%;
   overflow-x:auto;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling:touch;
   border:1px solid var(--border);
-  border-radius: 12px;
-  margin-top: 10px;
+  border-radius:12px;
+  margin-top:10px;
   background:#fff;
 }
-table{
-  width:100%;
-  border-collapse: collapse;
-  min-width: 860px;
-}
-th, td{
-  border-bottom: 1px solid var(--border);
-  padding: 10px;
-  vertical-align: top;
-  font-size: 14px;
-}
-th{
-  background:#f8fafc;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-.total{
-  background:var(--soft);
-  font-weight: 800;
-}
+table{ width:100%; border-collapse:collapse; min-width:860px; }
+th, td{ border-bottom:1px solid var(--border); padding:10px; vertical-align:top; font-size:14px; }
+th{ background:#f8fafc; position:sticky; top:0; z-index:1; }
+.total{ background:var(--soft); font-weight:800; }
 
-/* Add-row bar (was missing explicit styling) */
-.addrow-bar{
-  margin-top: 10px;
-  display:flex;
-  justify-content:flex-start;
-}
+.addrow-bar{ margin-top:10px; display:flex; justify-content:flex-start; }
 
-/* Buttons */
 .actions{
   display:grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 14px;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:14px;
 }
-@media (min-width: 640px){
-  .actions{
-    grid-template-columns: 1fr 1fr;
-  }
-  .actions .wide{
-    grid-column: 1 / -1;
-  }
+@media (min-width:640px){
+  .actions{ grid-template-columns:1fr 1fr; }
+  .actions .wide{ grid-column:1 / -1; }
 }
 button{
   width:100%;
-  padding: 14px 16px;
-  font-size: 16px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
+  padding:14px 16px;
+  font-size:16px;
+  border-radius:14px;
+  border:1px solid var(--border);
   background:#fff;
   cursor:pointer;
 }
-button.primary{
-  background: var(--navy);
-  color:#fff;
-  border-color: var(--navy);
-}
-button.danger{
-  background:#b91c1c;
-  color:#fff;
-  border-color:#b91c1c;
-}
-button.smallbtn{
-  padding: 10px 12px;
-  font-size: 14px;
-  width:auto;
-  border-radius: 12px;
-}
+button.primary{ background:var(--navy); color:#fff; border-color:var(--navy); }
+button.danger{ background:#b91c1c; color:#fff; border-color:#b91c1c; }
+button.smallbtn{ padding:10px 12px; font-size:14px; width:auto; border-radius:12px; }
 
-/* Locked state */
-.locked input, .locked textarea, .locked select{
-  background:#f3f4f6 !important;
-}
-.locked .addrow-bar button,
-.locked .row-remove-btn{
-  display:none !important;
-}
+.locked input, .locked textarea, .locked select{ background:#f3f4f6 !important; }
+.locked .addrow-bar button, .locked .row-remove-btn{ display:none !important; }
 
-/* Footer */
 .footer{
   text-align:center;
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 18px;
-  line-height: 1.35;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:18px;
+  line-height:1.35;
 }
 
-/* Print */
 @media print{
   body{ background:#fff; }
   .container{ padding:0; }
   .card{ border:none; padding:0; }
   button, .addrow-bar, .hint, .logo-warning{ display:none !important; }
   .table-wrap{ border:none; }
-  a::after{ content:" (" attr(href) ")"; color:#111; font-weight: normal; }
+  a::after{ content:" (" attr(href) ")"; color:#111; font-weight:normal; }
 }
 </style>
 </head>
@@ -258,7 +172,6 @@ button.smallbtn{
 
     <header>
       <div class="brand-row">
-        <!-- Make sure these files exist EXACTLY as named in your repo (case-sensitive) -->
         <img id="mmtLogo" src="./assets/mmt-logo.jpg" alt="MMT Logo">
         <img id="fegLogo" src="./assets/feg-logo.jpg" alt="FEG Logo">
       </div>
@@ -289,7 +202,6 @@ button.smallbtn{
       </p>
     </header>
 
-    <!-- CLIENT INFO -->
     <h2>Client & Household Information</h2>
     <div class="grid cols2">
       <div>
@@ -338,7 +250,6 @@ button.smallbtn{
       </div>
     </div>
 
-    <!-- ADDRESS -->
     <h2>Address</h2>
     <div class="grid cols2">
       <div style="grid-column:1/-1;">
@@ -359,7 +270,6 @@ button.smallbtn{
       </div>
     </div>
 
-    <!-- HEALTH -->
     <h2>Health & Lifestyle Information</h2>
     <label>Health Issues / Medications / Concerns</label>
     <textarea id="healthIssues" placeholder="List any medical conditions, medications, or underwriting concerns"></textarea>
@@ -386,7 +296,6 @@ button.smallbtn{
       </div>
     </div>
 
-    <!-- INSURANCE -->
     <h2>Existing Insurance Policies & Carriers</h2>
     <div class="hint">Life, Term, Whole Life, IUL, Annuities, Disability, LTC, etc.</div>
 
@@ -417,7 +326,6 @@ button.smallbtn{
       <button id="addPolicyBtn" class="smallbtn" type="button" onclick="addPolicyRow()">➕ Add Policy</button>
     </div>
 
-    <!-- RETIREMENT -->
     <h2>401(k), 403(b), IRA, Roth, Pension & Other Retirement Accounts</h2>
 
     <div class="table-wrap">
@@ -448,7 +356,6 @@ button.smallbtn{
       <button id="addRetBtn" class="smallbtn" type="button" onclick="addRetRow()">➕ Add Retirement Account</button>
     </div>
 
-    <!-- LIFE NEEDS -->
     <h2>Life Insurance Needs Analysis</h2>
     <label>Debt & Liabilities</label><input type="number" class="life" inputmode="decimal" oninput="sumLife()" placeholder="0">
     <label>Final Expenses</label><input type="number" class="life" inputmode="decimal" oninput="sumLife()" placeholder="0">
@@ -460,23 +367,57 @@ button.smallbtn{
     <label>Total Coverage Needed</label>
     <input id="lifeTotal" class="total" readonly>
 
-    <!-- MONTHLY RETIREMENT BUDGET -->
+    <!-- ✅ FIXED BUDGET SECTION -->
     <h2>Monthly Retirement Budget</h2>
-    <label>Life Insurance Premiums</label><input type="number" class="monthly" inputmode="decimal" oninput="sumMonthly()" placeholder="0">
-    <label>IRA / 401(k) / 403(b) Contributions</label><input type="number" class="monthly" inputmode="decimal" oninput="sumMonthly()" placeholder="0">
-    <label>Tax Refund (Monthly Equivalent)</label><input type="number" class="monthly" inputmode="decimal" oninput="sumMonthly()" placeholder="0">
-    <label>Other Monthly Savings Toward Retirement</label><input type="number" class="monthly" inputmode="decimal" oninput="sumMonthly()" placeholder="0">
+
+    <div class="grid cols2">
+      <div>
+        <label>Household Monthly Income (auto)</label>
+        <input id="householdMonthlyIncome" class="total" readonly>
+        <div class="hint">Calculated from Client + Spouse annual salaries ÷ 12.</div>
+      </div>
+      <div>
+        <label>Total Current Monthly Retirement Savings (auto)</label>
+        <input id="totalRetirementSavings" class="total" readonly>
+        <div class="hint">Sum of premiums + contributions + tax refund + other monthly savings.</div>
+      </div>
+    </div>
+
+    <label>Life Insurance Premiums (Monthly)</label>
+    <input type="number" id="budgetLifePremium" inputmode="decimal" placeholder="0">
+
+    <div class="hint" style="margin-top:6px;">
+      <label style="font-weight:700; display:flex; gap:10px; align-items:center; margin:0;">
+        <input type="checkbox" id="autoLifePremium" style="width:auto; margin:0;">
+        Auto-fill from “Total Monthly Premiums” above
+      </label>
+    </div>
+
+    <label>IRA / 401(k) / 403(b) Contributions (Monthly)</label>
+    <input type="number" id="budgetRetContrib" inputmode="decimal" placeholder="0">
+
+    <div class="hint" style="margin-top:6px;">
+      <label style="font-weight:700; display:flex; gap:10px; align-items:center; margin:0;">
+        <input type="checkbox" id="autoRetContrib" style="width:auto; margin:0;">
+        Auto-fill from “Total Monthly Contributions” in retirement accounts table
+      </label>
+    </div>
+
+    <label>Tax Refund (Monthly Equivalent)</label>
+    <input type="number" id="budgetTaxRefund" inputmode="decimal" placeholder="0">
+
+    <label>Other Monthly Savings Toward Retirement</label>
+    <input type="number" id="budgetOtherSavings" inputmode="decimal" placeholder="0">
 
     <label>Estimated Monthly Living Expenses (excluding retirement savings)</label>
-    <input type="number" id="livingExpenses" inputmode="decimal" oninput="sumMonthly()" placeholder="0">
+    <input type="number" id="livingExpenses" inputmode="decimal" placeholder="0">
 
-    <label>Total Monthly Retirement Funding Sources</label>
-    <input id="monthlyTotal" class="total" readonly>
-
-    <label>Net Monthly Retirement Capacity</label>
+    <label>Net Monthly Retirement Capacity (auto)</label>
     <input id="netRetirement" class="total" readonly>
+    <div class="hint">
+      Household Monthly Income − Living Expenses − Total Current Monthly Retirement Savings
+    </div>
 
-    <!-- SIGNATURE -->
     <h2>Signature Acknowledgement</h2>
     <div class="grid cols2">
       <div>
@@ -495,7 +436,6 @@ button.smallbtn{
       </div>
     </div>
 
-    <!-- ACTIONS -->
     <div class="actions">
       <button class="primary" type="button" onclick="lockForm()">🔒 Lock Form</button>
       <button id="downloadBtn" type="button" onclick="window.print()">⬇️ Download / Save</button>
@@ -512,11 +452,13 @@ button.smallbtn{
 
 <script>
 /* ===== Logo troubleshooting ===== */
-function showLogoWarning(){
-  document.getElementById("logoWarning").style.display = "block";
-}
+function showLogoWarning(){ document.getElementById("logoWarning").style.display="block"; }
 document.getElementById("mmtLogo").addEventListener("error", showLogoWarning);
 document.getElementById("fegLogo").addEventListener("error", showLogoWarning);
+
+/* ===== Helpers ===== */
+function n(v){ return Number(v || 0); }
+function isLocked(){ return document.getElementById("formContainer").classList.contains("locked"); }
 
 /* ===== Dynamic rows ===== */
 function addPolicyRow(){
@@ -569,37 +511,68 @@ function removeRow(btn){
 /* ===== Sums ===== */
 function sumPolicies(){
   let t=0;
-  document.querySelectorAll(".polPrem").forEach(i=>t+=Number(i.value||0));
-  document.getElementById("policyTotal").value=t;
+  document.querySelectorAll(".polPrem").forEach(i=>t += n(i.value));
+  document.getElementById("policyTotal").value = t.toFixed(0);
+  syncBudgetAutofill();
+  calcRetirementCapacity();
 }
 
 function sumRet(){
   let v=0, c=0;
-  document.querySelectorAll(".retVal").forEach(i=>v+=Number(i.value||0));
-  document.querySelectorAll(".retCon").forEach(i=>c+=Number(i.value||0));
-  document.getElementById("retValTotal").value=v;
-  document.getElementById("retConTotal").value=c;
+  document.querySelectorAll(".retVal").forEach(i=>v += n(i.value));
+  document.querySelectorAll(".retCon").forEach(i=>c += n(i.value));
+  document.getElementById("retValTotal").value = v.toFixed(0);
+  document.getElementById("retConTotal").value = c.toFixed(0);
+  syncBudgetAutofill();
+  calcRetirementCapacity();
 }
 
 function sumLife(){
   let t=0;
-  document.querySelectorAll(".life").forEach(i=>t+=Number(i.value||0));
-  document.getElementById("lifeTotal").value=t;
+  document.querySelectorAll(".life").forEach(i=>t += n(i.value));
+  document.getElementById("lifeTotal").value = t.toFixed(0);
 }
 
-function sumMonthly(){
-  let funding=0;
-  document.querySelectorAll(".monthly").forEach(i=>funding+=Number(i.value||0));
-  const living=Number(document.getElementById("livingExpenses").value||0);
-  document.getElementById("monthlyTotal").value=funding;
-  document.getElementById("netRetirement").value=funding-living;
+/* ===== Retirement Capacity (FIXED) ===== */
+function householdMonthlyIncome(){
+  const annual = n(document.getElementById("clientSalary").value) + n(document.getElementById("spouseSalary").value);
+  return annual / 12;
+}
+
+function currentMonthlyRetirementSavings(){
+  const prem = n(document.getElementById("budgetLifePremium").value);
+  const con  = n(document.getElementById("budgetRetContrib").value);
+  const tax  = n(document.getElementById("budgetTaxRefund").value);
+  const oth  = n(document.getElementById("budgetOtherSavings").value);
+  return prem + con + tax + oth;
+}
+
+function syncBudgetAutofill(){
+  const autoLife = document.getElementById("autoLifePremium").checked;
+  const autoCon  = document.getElementById("autoRetContrib").checked;
+
+  if (autoLife){
+    document.getElementById("budgetLifePremium").value = n(document.getElementById("policyTotal").value).toFixed(0);
+  }
+  if (autoCon){
+    document.getElementById("budgetRetContrib").value = n(document.getElementById("retConTotal").value).toFixed(0);
+  }
+}
+
+function calcRetirementCapacity(){
+  const incomeM = householdMonthlyIncome();
+  document.getElementById("householdMonthlyIncome").value = incomeM ? incomeM.toFixed(0) : "";
+
+  const savingsM = currentMonthlyRetirementSavings();
+  document.getElementById("totalRetirementSavings").value = savingsM ? savingsM.toFixed(0) : "";
+
+  const living = n(document.getElementById("livingExpenses").value);
+
+  const net = incomeM - living - savingsM;
+  document.getElementById("netRetirement").value = isFinite(net) ? net.toFixed(0) : "";
 }
 
 /* ===== Locking ===== */
-function isLocked(){
-  return document.getElementById("formContainer").classList.contains("locked");
-}
-
 function lockForm(){
   const sigName=document.getElementById("sigName").value.trim();
   const sigDate=document.getElementById("sigDate").value;
@@ -613,7 +586,6 @@ function lockForm(){
   document.getElementById("formContainer").classList.add("locked");
   document.querySelectorAll("input,textarea,select").forEach(i=>i.disabled=true);
 
-  // Keep the actions that must still work
   document.getElementById("downloadBtn").disabled = false;
   document.getElementById("emailBtn").disabled = false;
 
@@ -633,7 +605,6 @@ function emailForm(){
 
   const to="mhmerritt@gmail.com";
   const cc="mtepengco@gmail.com";
-
   window.location.href=`mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
 }
 
@@ -657,13 +628,22 @@ function clearForm(){
   document.getElementById("retValTotal").value="";
   document.getElementById("retConTotal").value="";
   document.getElementById("lifeTotal").value="";
-  document.getElementById("monthlyTotal").value="";
+  document.getElementById("householdMonthlyIncome").value="";
+  document.getElementById("totalRetirementSavings").value="";
   document.getElementById("netRetirement").value="";
 }
 
-/* Starter rows */
+/* ===== Wiring: recalc when inputs change ===== */
+["clientSalary","spouseSalary","budgetLifePremium","budgetRetContrib","budgetTaxRefund","budgetOtherSavings","livingExpenses"]
+  .forEach(id => document.getElementById(id).addEventListener("input", calcRetirementCapacity));
+
+document.getElementById("autoLifePremium").addEventListener("change", () => { syncBudgetAutofill(); calcRetirementCapacity(); });
+document.getElementById("autoRetContrib").addEventListener("change", () => { syncBudgetAutofill(); calcRetirementCapacity(); });
+
+/* Starter rows + initial calc */
 addPolicyRow();
 addRetRow();
+calcRetirementCapacity();
 </script>
 
 </body>
