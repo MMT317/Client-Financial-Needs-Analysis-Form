@@ -57,6 +57,7 @@ header img{
   width:auto;
   max-width: 46vw;
   object-fit: contain;
+  border-radius: 10px;
 }
 h1{
   font-size: 20px;
@@ -84,6 +85,20 @@ header a{ color: var(--navy); font-weight: 700; }
   margin-right:auto;
 }
 .licenses strong{ color:#111827; }
+
+.logo-warning{
+  display:none;
+  margin: 10px auto 0;
+  max-width: 980px;
+  background:#fff3cd;
+  border:1px solid #ffeeba;
+  color:#856404;
+  padding:10px 12px;
+  border-radius: 12px;
+  text-align:left;
+  font-size: 13px;
+}
+.logo-warning code{ font-weight: 700; }
 
 /* Section titles */
 h2{
@@ -159,6 +174,13 @@ th{
   font-weight: 800;
 }
 
+/* Add-row bar (was missing explicit styling) */
+.addrow-bar{
+  margin-top: 10px;
+  display:flex;
+  justify-content:flex-start;
+}
+
 /* Buttons */
 .actions{
   display:grid;
@@ -204,6 +226,10 @@ button.smallbtn{
 .locked input, .locked textarea, .locked select{
   background:#f3f4f6 !important;
 }
+.locked .addrow-bar button,
+.locked .row-remove-btn{
+  display:none !important;
+}
 
 /* Footer */
 .footer{
@@ -219,7 +245,7 @@ button.smallbtn{
   body{ background:#fff; }
   .container{ padding:0; }
   .card{ border:none; padding:0; }
-  button, .addrow-bar, .hint{ display:none !important; }
+  button, .addrow-bar, .hint, .logo-warning{ display:none !important; }
   .table-wrap{ border:none; }
   a::after{ content:" (" attr(href) ")"; color:#111; font-weight: normal; }
 }
@@ -232,16 +258,22 @@ button.smallbtn{
 
     <header>
       <div class="brand-row">
-        <!-- GitHub Pages logo fix: put images in /assets -->
-        <!-- /assets/mmt-logo.jpg and /assets/feg-logo.jpg -->
-        <img src="./assets/mmt-logo.jpg" alt="MMT Logo">
-        <img src="./assets/feg-logo.jpg" alt="FEG Logo">
+        <!-- Make sure these files exist EXACTLY as named in your repo (case-sensitive) -->
+        <img id="mmtLogo" src="./assets/mmt-logo.jpg" alt="MMT Logo">
+        <img id="fegLogo" src="./assets/feg-logo.jpg" alt="FEG Logo">
+      </div>
+
+      <div id="logoWarning" class="logo-warning">
+        One or more logos failed to load. Confirm your repo contains:
+        <div style="margin-top:6px;">
+          <code>assets/mmt-logo.jpg</code> and <code>assets/feg-logo.jpg</code>
+        </div>
+        (GitHub Pages paths are case-sensitive.)
       </div>
 
       <h1>MMT Financial & Insurance</h1>
       <p><strong>Educate • Protect • Wealth</strong></p>
 
-      <!-- LICENSES (Added) -->
       <div class="licenses">
         <div><strong>Marc Merritt</strong> — NYS Life, Health, FIA Licensed since 2001, LA # 1010090</div>
         <div><strong>Marylene Teopengco-Merritt</strong> — NYS Life &amp; FIA Licensed since 2017, LA # 1298496</div>
@@ -382,7 +414,7 @@ button.smallbtn{
     </div>
 
     <div class="addrow-bar">
-      <button class="smallbtn" type="button" onclick="addPolicyRow()">➕ Add Policy</button>
+      <button id="addPolicyBtn" class="smallbtn" type="button" onclick="addPolicyRow()">➕ Add Policy</button>
     </div>
 
     <!-- RETIREMENT -->
@@ -413,7 +445,7 @@ button.smallbtn{
     </div>
 
     <div class="addrow-bar">
-      <button class="smallbtn" type="button" onclick="addRetRow()">➕ Add Retirement Account</button>
+      <button id="addRetBtn" class="smallbtn" type="button" onclick="addRetRow()">➕ Add Retirement Account</button>
     </div>
 
     <!-- LIFE NEEDS -->
@@ -466,8 +498,8 @@ button.smallbtn{
     <!-- ACTIONS -->
     <div class="actions">
       <button class="primary" type="button" onclick="lockForm()">🔒 Lock Form</button>
-      <button type="button" onclick="window.print()">⬇️ Download / Save</button>
-      <button type="button" onclick="emailForm()">✉️ Email Form</button>
+      <button id="downloadBtn" type="button" onclick="window.print()">⬇️ Download / Save</button>
+      <button id="emailBtn" type="button" onclick="emailForm()">✉️ Email Form</button>
       <button class="danger wide" type="button" onclick="clearForm()">🧹 Clear Form</button>
     </div>
 
@@ -479,7 +511,16 @@ button.smallbtn{
 </div>
 
 <script>
+/* ===== Logo troubleshooting ===== */
+function showLogoWarning(){
+  document.getElementById("logoWarning").style.display = "block";
+}
+document.getElementById("mmtLogo").addEventListener("error", showLogoWarning);
+document.getElementById("fegLogo").addEventListener("error", showLogoWarning);
+
+/* ===== Dynamic rows ===== */
 function addPolicyRow(){
+  if (isLocked()) return;
   const tbody=document.querySelector("#policyTable tbody");
   const tr=document.createElement("tr");
   tr.innerHTML=`
@@ -488,11 +529,13 @@ function addPolicyRow(){
     <td><input placeholder="Policy #" style="min-width:140px;"></td>
     <td><input type="number" inputmode="decimal" placeholder="0" style="min-width:140px;"></td>
     <td><input type="number" inputmode="decimal" class="polPrem" placeholder="0" oninput="sumPolicies()" style="min-width:160px;"></td>
-    <td><button type="button" class="smallbtn" onclick="removeRow(this);sumPolicies()">Remove</button></td>`;
+    <td><button type="button" class="smallbtn row-remove-btn" onclick="removeRow(this);sumPolicies()">Remove</button></td>`;
   tbody.appendChild(tr);
   sumPolicies();
 }
+
 function addRetRow(){
+  if (isLocked()) return;
   const tbody=document.querySelector("#retTable tbody");
   const tr=document.createElement("tr");
   tr.innerHTML=`
@@ -512,19 +555,24 @@ function addRetRow(){
     <td><input placeholder="Employer (if applicable)" style="min-width:190px;"></td>
     <td><input type="number" inputmode="decimal" class="retVal" placeholder="0" oninput="sumRet()" style="min-width:160px;"></td>
     <td><input type="number" inputmode="decimal" class="retCon" placeholder="0" oninput="sumRet()" style="min-width:180px;"></td>
-    <td><button type="button" class="smallbtn" onclick="removeRow(this);sumRet()">Remove</button></td>`;
+    <td><button type="button" class="smallbtn row-remove-btn" onclick="removeRow(this);sumRet()">Remove</button></td>`;
   tbody.appendChild(tr);
   sumRet();
 }
+
 function removeRow(btn){
+  if (isLocked()) return;
   const tr = btn.closest("tr");
   if(tr) tr.remove();
 }
+
+/* ===== Sums ===== */
 function sumPolicies(){
   let t=0;
   document.querySelectorAll(".polPrem").forEach(i=>t+=Number(i.value||0));
   document.getElementById("policyTotal").value=t;
 }
+
 function sumRet(){
   let v=0, c=0;
   document.querySelectorAll(".retVal").forEach(i=>v+=Number(i.value||0));
@@ -532,11 +580,13 @@ function sumRet(){
   document.getElementById("retValTotal").value=v;
   document.getElementById("retConTotal").value=c;
 }
+
 function sumLife(){
   let t=0;
   document.querySelectorAll(".life").forEach(i=>t+=Number(i.value||0));
   document.getElementById("lifeTotal").value=t;
 }
+
 function sumMonthly(){
   let funding=0;
   document.querySelectorAll(".monthly").forEach(i=>funding+=Number(i.value||0));
@@ -544,6 +594,12 @@ function sumMonthly(){
   document.getElementById("monthlyTotal").value=funding;
   document.getElementById("netRetirement").value=funding-living;
 }
+
+/* ===== Locking ===== */
+function isLocked(){
+  return document.getElementById("formContainer").classList.contains("locked");
+}
+
 function lockForm(){
   const sigName=document.getElementById("sigName").value.trim();
   const sigDate=document.getElementById("sigDate").value;
@@ -556,23 +612,32 @@ function lockForm(){
 
   document.getElementById("formContainer").classList.add("locked");
   document.querySelectorAll("input,textarea,select").forEach(i=>i.disabled=true);
+
+  // Keep the actions that must still work
+  document.getElementById("downloadBtn").disabled = false;
+  document.getElementById("emailBtn").disabled = false;
+
   alert("Form locked. Download/Save and email your completed form.");
 }
+
+/* ===== Email ===== */
 function emailForm(){
   const clientName=(document.getElementById("clientName").value||"").trim();
   const subject=encodeURIComponent("Completed MMT Needs Analysis Form - " + (clientName || "Client"));
+
   const body=encodeURIComponent(
-    "Client Name: " + (clientName || "__________________________") + "\\n\\n" +
-    "Please review my Attached Needs Analysis Form and I look forward to reviewing this with you or Marylene.\\n\\n" +
+    "Client Name: " + (clientName || "__________________________") + "\n\n" +
+    "Please review my Attached Needs Analysis Form and I look forward to reviewing this with you or Marylene.\n\n" +
     "IMPORTANT: Please attach the downloaded/printed PDF of this form to this email before sending."
   );
 
-  /* Replace these with your real emails */
-  const to="marc@email.com";
-  const cc="marylene@email.com";
+  const to="mhmerritt@gmail.com";
+  const cc="mtepengco@gmail.com";
 
   window.location.href=`mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
 }
+
+/* ===== Clear ===== */
 function clearForm(){
   if(!confirm("Clear all fields?")) return;
 
@@ -596,7 +661,7 @@ function clearForm(){
   document.getElementById("netRetirement").value="";
 }
 
-/* starter rows */
+/* Starter rows */
 addPolicyRow();
 addRetRow();
 </script>
