@@ -367,7 +367,6 @@ button.smallbtn{ padding:10px 12px; font-size:14px; width:auto; border-radius:12
     <label>Total Coverage Needed</label>
     <input id="lifeTotal" class="total" readonly>
 
-    <!-- ✅ FIXED BUDGET SECTION -->
     <h2>Monthly Retirement Budget</h2>
 
     <div class="grid cols2">
@@ -451,16 +450,13 @@ button.smallbtn{ padding:10px 12px; font-size:14px; width:auto; border-radius:12
 </div>
 
 <script>
-/* ===== Logo troubleshooting ===== */
 function showLogoWarning(){ document.getElementById("logoWarning").style.display="block"; }
 document.getElementById("mmtLogo").addEventListener("error", showLogoWarning);
 document.getElementById("fegLogo").addEventListener("error", showLogoWarning);
 
-/* ===== Helpers ===== */
 function n(v){ return Number(v || 0); }
 function isLocked(){ return document.getElementById("formContainer").classList.contains("locked"); }
 
-/* ===== Dynamic rows ===== */
 function addPolicyRow(){
   if (isLocked()) return;
   const tbody=document.querySelector("#policyTable tbody");
@@ -508,7 +504,6 @@ function removeRow(btn){
   if(tr) tr.remove();
 }
 
-/* ===== Sums ===== */
 function sumPolicies(){
   let t=0;
   document.querySelectorAll(".polPrem").forEach(i=>t += n(i.value));
@@ -533,7 +528,6 @@ function sumLife(){
   document.getElementById("lifeTotal").value = t.toFixed(0);
 }
 
-/* ===== Retirement Capacity (FIXED) ===== */
 function householdMonthlyIncome(){
   const annual = n(document.getElementById("clientSalary").value) + n(document.getElementById("spouseSalary").value);
   return annual / 12;
@@ -572,7 +566,6 @@ function calcRetirementCapacity(){
   document.getElementById("netRetirement").value = isFinite(net) ? net.toFixed(0) : "";
 }
 
-/* ===== Locking ===== */
 function lockForm(){
   const sigName=document.getElementById("sigName").value.trim();
   const sigDate=document.getElementById("sigDate").value;
@@ -592,7 +585,6 @@ function lockForm(){
   alert("Form locked. Download/Save and email your completed form.");
 }
 
-/* ===== Email ===== */
 function emailForm(){
   const clientName=(document.getElementById("clientName").value||"").trim();
   const subject=encodeURIComponent("Completed MMT Needs Analysis Form - " + (clientName || "Client"));
@@ -604,11 +596,11 @@ function emailForm(){
   );
 
   const to="mhmerritt@gmail.com";
-  const cc="mtepengco@gmail.com";
+  const cc="mteopengco@gmail.com";  /* ✅ Corrected Marylene email */
+
   window.location.href=`mailto:${to}?cc=${cc}&subject=${subject}&body=${body}`;
 }
 
-/* ===== Clear ===== */
 function clearForm(){
   if(!confirm("Clear all fields?")) return;
 
@@ -633,14 +625,12 @@ function clearForm(){
   document.getElementById("netRetirement").value="";
 }
 
-/* ===== Wiring: recalc when inputs change ===== */
 ["clientSalary","spouseSalary","budgetLifePremium","budgetRetContrib","budgetTaxRefund","budgetOtherSavings","livingExpenses"]
   .forEach(id => document.getElementById(id).addEventListener("input", calcRetirementCapacity));
 
 document.getElementById("autoLifePremium").addEventListener("change", () => { syncBudgetAutofill(); calcRetirementCapacity(); });
 document.getElementById("autoRetContrib").addEventListener("change", () => { syncBudgetAutofill(); calcRetirementCapacity(); });
 
-/* Starter rows + initial calc */
 addPolicyRow();
 addRetRow();
 calcRetirementCapacity();
